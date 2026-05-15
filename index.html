@@ -3,6 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#003f8a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="OJT Portal">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="TIIC OJT Portal – Reymark M. Ejes">
+<link rel="manifest" href="manifest.json">
+<!-- PWA Icons (inline data URIs so single-file works) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='38' fill='%23003f8a'/%3E%3Ctext x='96' y='130' text-anchor='middle' font-size='110' font-family='Arial' fill='%23ffc107'%3E⏱%3C/text%3E%3C/svg%3E">
 <title>TIIC OJT Portal – Reymark M. Ejes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -100,14 +109,49 @@ main{position:relative;z-index:1}
 .field-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#9ca3af;margin-bottom:7px;text-align:left}
 .form-select,.form-input{width:100%;background:var(--offwh);border:2px solid var(--border);border-radius:13px;padding:13px 15px;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:#111827;appearance:none;margin-bottom:14px;transition:border-color .2s;}
 .form-select:focus,.form-input:focus{outline:none;border-color:var(--blue2)}
-.shift-btn{width:100%;padding:17px;border-radius:15px;font-family:'Poppins',sans-serif;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:1.8px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 8px 22px var(--shadow-blue);transition:all .2s;}
-.shift-btn:active{transform:scale(.97)}
-.shift-btn.ending{background:linear-gradient(135deg,var(--red),var(--red2));box-shadow:0 8px 22px var(--shadow-red)}
+
+/* ── TIER BUTTONS (Clock Tab) ─────────────────────────────── */
+.tier-section-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#9ca3af;margin-bottom:10px;text-align:left}
+.tier-btn-group{display:flex;flex-direction:column;gap:11px;margin-bottom:6px}
+.tier-btn{width:100%;padding:18px 20px;border-radius:16px;font-family:'Poppins',sans-serif;font-weight:800;font-size:14px;letter-spacing:.3px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all .18s;position:relative;overflow:hidden;}
+.tier-btn:active{transform:scale(.97)}
+.tier-btn::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.08);opacity:0;transition:opacity .18s}
+.tier-btn:active::before{opacity:1}
+.tier-regular{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 8px 22px var(--shadow-blue);}
+.tier-extended{background:linear-gradient(135deg,#6a3fa0,#9b59e8);color:#fff;box-shadow:0 8px 22px rgba(106,63,160,.32);}
+.tier-holiday{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;box-shadow:0 8px 22px var(--shadow-red);}
+.tier-btn-left{text-align:left}
+.tier-btn-hrs{font-size:22px;font-weight:900;line-height:1}
+.tier-btn-name{font-size:10px;font-weight:600;opacity:.75;margin-top:2px;text-transform:uppercase;letter-spacing:.9px}
+.tier-btn-right{text-align:right}
+.tier-btn-time{font-size:13px;font-weight:700;opacity:.85}
+.tier-btn-out{font-size:9.5px;font-weight:600;opacity:.6;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── TIER SELECTOR (Manual Entry) ────────────────────────── */
+.tier-radio-group{display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
+.tier-radio-option{display:flex;align-items:center;gap:13px;background:var(--offwh);border:2px solid var(--border);border-radius:13px;padding:12px 14px;cursor:pointer;transition:all .18s;user-select:none;}
+.tier-radio-option.selected{border-color:var(--blue2);background:rgba(0,98,212,.06)}
+.tier-radio-option input[type=radio]{display:none}
+.tier-radio-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s;background:#fff}
+.tier-radio-option.selected .tier-radio-dot{border-color:var(--blue2);background:var(--blue2)}
+.tier-radio-option.selected .tier-radio-dot::after{content:'';width:7px;height:7px;border-radius:50%;background:#fff;display:block}
+.tier-radio-info{flex:1}
+.tier-radio-hrs{font-size:14px;font-weight:800;color:#111827}
+.tier-radio-desc{font-size:10px;font-weight:600;color:#9ca3af;margin-top:1px}
+/* Color accent for radio options */
+.tier-radio-option.selected.tier-r-regular .tier-radio-dot{border-color:var(--blue2);background:var(--blue2)}
+.tier-radio-option.selected.tier-r-extended .tier-radio-dot{border-color:#9b59e8;background:#9b59e8}
+.tier-radio-option.selected.tier-r-holiday .tier-radio-dot{border-color:var(--red2);background:var(--red2)}
+.tier-radio-option.selected.tier-r-extended{border-color:#9b59e8;background:rgba(155,89,232,.06)}
+.tier-radio-option.selected.tier-r-holiday{border-color:var(--red2);background:rgba(232,41,61,.06)}
+.tier-tag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;color:#fff;margin-left:auto}
+.tag-regular{background:var(--blue2)}
+.tag-extended{background:#9b59e8}
+.tag-holiday{background:var(--red2)}
 
 /* MANUAL ENTRY CARD */
 .entry-card{background:#fff;border-radius:22px;padding:20px 18px;box-shadow:0 4px 18px var(--shadow-blue);border:1px solid var(--border);margin-bottom:16px}
 .entry-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:#7b8ab8;margin-bottom:14px}
-.time-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .save-btn{width:100%;padding:15px;border-radius:13px;font-family:'Poppins',sans-serif;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:1.8px;border:none;cursor:pointer;margin-top:6px;background:linear-gradient(135deg,var(--dark2),#374151);color:#fff;box-shadow:0 5px 16px rgba(17,24,39,.28);transition:all .2s}
 .save-btn:active{transform:scale(.97)}
 
@@ -122,13 +166,9 @@ main{position:relative;z-index:1}
 .dtr-outer{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 18px var(--shadow-blue);border:1px solid var(--border);margin-bottom:14px;}
 .dtr-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .dtr-table{width:100%;border-collapse:collapse;font-size:10px;}
-
-/* Header row */
 .dtr-table .th-group{background:linear-gradient(135deg,var(--blue),var(--blue2));}
 .dtr-table .th-group th{color:#fff;font-weight:800;padding:10px 10px;text-align:center;font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;border:1px solid rgba(255,255,255,.15);}
 .dtr-table .th-group th.th-date{text-align:left;padding-left:14px;min-width:90px;}
-
-/* Body cells */
 .dtr-table tbody tr{border-bottom:1px solid rgba(0,62,138,.06);}
 .dtr-table tbody tr:nth-child(even){background:rgba(0,62,138,.02)}
 .dtr-table td{padding:9px 10px;text-align:center;color:#374151;font-size:10px;border:1px solid rgba(0,62,138,.06);vertical-align:middle;}
@@ -136,24 +176,16 @@ main{position:relative;z-index:1}
 .dtr-table td.no-duty{color:#d1d5db;font-style:italic;font-size:9px;}
 .dtr-table td.time-val{font-weight:600;color:#1e3a6e;font-size:10px;}
 .dtr-table td.daily-total{font-weight:800;color:#1a1000;font-size:10.5px;background:rgba(255,193,7,.12);}
-
-/* Saturday row highlight */
 .dtr-table tbody tr.sat-row{background:linear-gradient(90deg,rgba(192,24,43,.06),rgba(192,24,43,.02));}
 .dtr-table tbody tr.sat-row td.td-date{color:var(--red);}
 .dtr-table tbody tr.sat-row td.daily-total{background:rgba(192,24,43,.08);color:var(--red);}
-
-/* Week header row */
 .dtr-table tbody tr.week-header-row td{
   background:linear-gradient(90deg,rgba(0,62,138,.09),rgba(0,62,138,.03));
   font-weight:800;font-size:9px;color:#4a6fa5;text-transform:uppercase;letter-spacing:1.2px;
   padding:5px 14px;border-top:2px solid rgba(0,62,138,.15);text-align:left;
 }
-
-/* Week total row */
 .dtr-table tbody tr.week-total-row{background:linear-gradient(90deg,rgba(255,193,7,.16),rgba(255,193,7,.05));border-top:1.5px solid rgba(255,193,7,.4);}
 .dtr-table tbody tr.week-total-row td{font-weight:800;font-size:10px;color:#7a5500;padding:7px 10px;}
-
-/* Month total row */
 .dtr-table tbody tr.month-total-row{background:linear-gradient(90deg,rgba(0,62,138,.14),rgba(0,62,138,.04));border-top:2.5px solid rgba(0,62,138,.35);}
 .dtr-table tbody tr.month-total-row td{font-weight:900;font-size:11px;color:var(--blue);padding:10px 10px;}
 
@@ -166,8 +198,6 @@ main{position:relative;z-index:1}
 .dtr-sum-val.red{background:linear-gradient(135deg,var(--red),var(--red2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .dtr-sum-val.green{color:var(--green)}
 .dtr-sum-val.yellow{color:#b58000}
-
-/* OT legend badge */
 .ot-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;color:var(--red);background:rgba(192,24,43,.08);border:1px solid rgba(192,24,43,.18);border-radius:8px;padding:4px 9px;margin-bottom:10px;}
 
 /* ===================== JOURNAL TAB ===================== */
@@ -205,6 +235,15 @@ main{position:relative;z-index:1}
 .toast-title{font-size:13px;font-weight:800;color:#111827}
 .toast-msg{font-size:10.5px;color:#6b7280;font-weight:500;margin-top:1px}
 .empty-state{text-align:center;padding:24px;color:#b0bad4;font-size:12.5px;font-weight:500}
+
+/* PWA install banner */
+#install-banner{display:none;position:fixed;bottom:calc(70px + env(safe-area-inset-bottom));left:16px;right:16px;background:linear-gradient(135deg,var(--blue),var(--blue2));border-radius:16px;padding:14px 16px;box-shadow:0 10px 30px var(--shadow-blue);z-index:900;align-items:center;gap:12px;}
+#install-banner.show{display:flex}
+.install-text{flex:1;color:#fff}
+.install-title{font-size:12px;font-weight:800}
+.install-sub{font-size:10px;font-weight:500;opacity:.75;margin-top:1px}
+.install-btn{background:var(--yellow);color:#1a1000;border:none;border-radius:10px;padding:9px 14px;font-family:'Poppins',sans-serif;font-weight:800;font-size:11px;cursor:pointer;white-space:nowrap;}
+.install-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:16px;cursor:pointer;padding:4px;}
 </style>
 </head>
 <body>
@@ -215,6 +254,16 @@ main{position:relative;z-index:1}
   <div id="toast-icon" class="toast-icon ti-success">✓</div>
   <div><p id="toast-title" class="toast-title"></p><p id="toast-msg" class="toast-msg"></p></div>
 </div></div>
+
+<!-- PWA INSTALL BANNER -->
+<div id="install-banner">
+  <div class="install-text">
+    <p class="install-title">📲 Add to Home Screen</p>
+    <p class="install-sub">Install this app for quick access</p>
+  </div>
+  <button class="install-btn" onclick="installApp()">Install</button>
+  <button class="install-close" onclick="dismissInstall()">✕</button>
+</div>
 
 <!-- HEADER -->
 <header class="site-header">
@@ -273,25 +322,81 @@ main{position:relative;z-index:1}
         <option>IT Main - TIIC - Bakilid</option>
         <option>Admin - Corporate (TIIC) - Reclamation</option>
       </select>
-      <button class="shift-btn" id="shift-btn" onclick="toggleShift()">Start Shift</button>
+
+      <p class="tier-section-label">Tap your tier when leaving</p>
+      <div class="tier-btn-group">
+        <button class="tier-btn tier-regular" onclick="saveTier('regular')">
+          <div class="tier-btn-left">
+            <div class="tier-btn-hrs">8.0h</div>
+            <div class="tier-btn-name">Regular</div>
+          </div>
+          <div class="tier-btn-right">
+            <div class="tier-btn-time">5:00 PM</div>
+            <div class="tier-btn-out">Time Out</div>
+          </div>
+        </button>
+        <button class="tier-btn tier-extended" onclick="saveTier('extended')">
+          <div class="tier-btn-left">
+            <div class="tier-btn-hrs">9.0h</div>
+            <div class="tier-btn-name">Extended</div>
+          </div>
+          <div class="tier-btn-right">
+            <div class="tier-btn-time">6:06 PM</div>
+            <div class="tier-btn-out">Time Out</div>
+          </div>
+        </button>
+        <button class="tier-btn tier-holiday" onclick="saveTier('holiday')">
+          <div class="tier-btn-left">
+            <div class="tier-btn-hrs">9.5h</div>
+            <div class="tier-btn-name">Holiday Week</div>
+          </div>
+          <div class="tier-btn-right">
+            <div class="tier-btn-time">6:30 PM</div>
+            <div class="tier-btn-out">Time Out</div>
+          </div>
+        </button>
+      </div>
     </div>
   </div>
 
+  <!-- MANUAL ENTRY -->
   <div class="entry-card" style="margin-top:16px">
     <p class="entry-title">Manual Entry</p>
     <div class="field-lbl">Date</div>
     <input type="date" class="form-input" id="man-date">
-    <div class="time-grid">
-      <div>
-        <p class="field-lbl">Time In</p>
-        <input type="time" class="form-input" id="man-in" value="08:00">
-      </div>
-      <div>
-        <p class="field-lbl">Time Out</p>
-        <input type="time" class="form-input" id="man-out">
-      </div>
+
+    <div class="field-lbl">Hours Tier</div>
+    <div class="tier-radio-group" id="tier-radio-group">
+      <label class="tier-radio-option tier-r-regular selected" onclick="selectTier(this,'regular')">
+        <input type="radio" name="man-tier" value="regular" checked>
+        <div class="tier-radio-dot"></div>
+        <div class="tier-radio-info">
+          <div class="tier-radio-hrs">8.0h — Regular</div>
+          <div class="tier-radio-desc">Time Out 5:00 PM</div>
+        </div>
+        <span class="tier-tag tag-regular">Regular</span>
+      </label>
+      <label class="tier-radio-option tier-r-extended" onclick="selectTier(this,'extended')">
+        <input type="radio" name="man-tier" value="extended">
+        <div class="tier-radio-dot"></div>
+        <div class="tier-radio-info">
+          <div class="tier-radio-hrs">9.0h — Extended</div>
+          <div class="tier-radio-desc">Time Out 6:06 PM</div>
+        </div>
+        <span class="tier-tag tag-extended">Extended</span>
+      </label>
+      <label class="tier-radio-option tier-r-holiday" onclick="selectTier(this,'holiday')">
+        <input type="radio" name="man-tier" value="holiday">
+        <div class="tier-radio-dot"></div>
+        <div class="tier-radio-info">
+          <div class="tier-radio-hrs">9.5h — Holiday Week</div>
+          <div class="tier-radio-desc">Time Out 6:30 PM</div>
+        </div>
+        <span class="tier-tag tag-holiday">Holiday</span>
+      </label>
     </div>
-    <div class="field-lbl" style="margin-top:4px">Site</div>
+
+    <div class="field-lbl">Site</div>
     <select class="form-select" id="man-site">
       <option>ChemPaints - TICC - Pilit</option>
       <option>iPak - TIPC - Tingub</option>
@@ -359,7 +464,7 @@ main{position:relative;z-index:1}
 </main>
 <script>
 /* =========================================================
-   FIREBASE CONFIG — replace with your own
+   FIREBASE CONFIG
 ========================================================= */
 const firebaseConfig = {
   apiKey: "AIzaSyDGFz-wV8aw1O787bjy-XRVDW_wFZByYXU",
@@ -375,9 +480,17 @@ const db = firebase.firestore();
 let ALL_LOGS = [];
 
 /* =========================================================
+   TIER CONFIG — single source of truth
+========================================================= */
+const TIERS = {
+  regular:  { timeOut: '17:00', hours: 8.0 },
+  extended: { timeOut: '18:06', hours: 9.0 },
+  holiday:  { timeOut: '18:30', hours: 9.5 }
+};
+
+/* =========================================================
    TIME HELPERS
 ========================================================= */
-// Convert "HH:MM" 24hr → "h:MM AM/PM"
 function to12hr(t){
   if(!t||t==='—') return '—';
   const [hh,mm]=t.split(':').map(Number);
@@ -387,15 +500,6 @@ function to12hr(t){
   return `${h}:${String(mm).padStart(2,'0')} ${period}`;
 }
 
-function calcHours(tIn, tOut){
-  if(!tIn||!tOut) return 0;
-  const [ih,im]=tIn.split(':').map(Number);
-  const [oh,om]=tOut.split(':').map(Number);
-  const mins=(oh*60+om)-(ih*60+im);
-  return Math.max(0, mins/60);
-}
-
-// Effective time-out (use actual timeOut or current time if ongoing)
 function effectiveTimeOut(tOut){
   return tOut || new Date().toTimeString().slice(0,5);
 }
@@ -449,18 +553,16 @@ function renderDash(){
   document.getElementById('avg-hours').textContent=days>0?(total/days).toFixed(1)+'h':'0h';
   document.getElementById('ot-hours-dash').textContent=otTotal.toFixed(1)+'h';
 
-  // Target finish date projection
   if(days>0){
     const avg=total/days;
     const daysNeeded=Math.ceil(Math.max(0,TARGET-total)/avg);
     const today=new Date();
-    // Count working days (Mon-Sat for IT, since Sat=OT)
     let d=new Date(today);
     let counted=0;
     while(counted<daysNeeded){
       d.setDate(d.getDate()+1);
       const dow=d.getDay();
-      if(dow!==0) counted++; // Sun=0 is off; Mon–Sat count
+      if(dow!==0) counted++;
     }
     const opts={weekday:'short',month:'long',day:'numeric',year:'numeric'};
     document.getElementById('target-date').textContent=d.toLocaleDateString('en-PH',opts);
@@ -473,7 +575,6 @@ function renderDash(){
     document.getElementById('target-days').textContent='Start logging to see projection';
   }
 
-  // Recent 3
   const recent=[...ALL_LOGS].slice(0,3);
   document.getElementById('recent-logs').innerHTML=recent.length
     ? recent.map(l=>`
@@ -505,51 +606,63 @@ function renderLogsList(){
 }
 
 /* =========================================================
-   SAVE MANUAL
+   CLOCK TAB — TIER BUTTONS
 ========================================================= */
-async function saveManual(){
-  const date=document.getElementById('man-date').value;
-  const tIn=document.getElementById('man-in').value||'08:00';
-  const tOut=document.getElementById('man-out').value;
-  const site=document.getElementById('man-site').value;
-  if(!date) return toast('Missing Date','Please select a date.','error');
-  if(!tOut) return toast('Missing Time Out','Please enter time out.','error');
-  const hours=calcHours(tIn,tOut);
-  if(hours<=0) return toast('Invalid Time','Time out must be after time in.','error');
-  const d=new Date(date+'T00:00:00');
-  const isOT=d.getDay()===6; // Saturday
-  await db.collection("ojt_logs").add({date,timeIn:tIn,timeOut:tOut,hours,site,isOT});
-  toast('Saved!',`${hours.toFixed(2)}h added${isOT?' (OT)':''}.`,'success');
+async function saveTier(tierKey){
+  const tier = TIERS[tierKey];
+  const site = document.getElementById('site-select').value;
+  const now = new Date();
+  const date = now.toLocaleDateString('en-CA', {timeZone:'Asia/Manila'}); // YYYY-MM-DD
+  const d = new Date(date + 'T00:00:00');
+  const isOT = d.getDay() === 6; // Saturday
+
+  await db.collection("ojt_logs").add({
+    date,
+    timeIn:  '08:00',
+    timeOut: tier.timeOut,
+    hours:   tier.hours,
+    site,
+    isOT
+  });
+
+  const tierLabel = tierKey === 'regular' ? 'Regular (8.0h)' : tierKey === 'extended' ? 'Extended (9.0h)' : 'Holiday (9.5h)';
+  toast('Logged! ✅', `${tierLabel}${isOT ? ' · OT' : ''} saved for ${date}.`, 'success');
   fetchOjtData();
 }
 
 /* =========================================================
-   SHIFT TOGGLE
+   MANUAL ENTRY — TIER SELECTOR
 ========================================================= */
-let shiftStart=null;
-function toggleShift(){
-  const btn=document.getElementById('shift-btn');
-  if(!shiftStart){
-    shiftStart=new Date();
-    btn.textContent='End Shift';
-    btn.classList.add('ending');
-    toast('Shift Started','Clock is running. Focus up!','success');
-  } else {
-    const now=new Date();
-    const site=document.getElementById('site-select').value;
-    const date=shiftStart.toISOString().split('T')[0];
-    const tIn=shiftStart.toTimeString().slice(0,5);
-    const tOut=now.toTimeString().slice(0,5);
-    const hours=calcHours(tIn,tOut);
-    const d=new Date(date+'T00:00:00');
-    const isOT=d.getDay()===6;
-    db.collection("ojt_logs").add({date,timeIn:tIn,timeOut:tOut,hours,site,isOT});
-    btn.textContent='Start Shift';
-    btn.classList.remove('ending');
-    toast('Shift Ended',`${hours.toFixed(2)}h logged${isOT?' (OT)':''}.`,'success');
-    shiftStart=null;
-    fetchOjtData();
-  }
+let selectedManualTier = 'regular';
+
+function selectTier(labelEl, tierKey){
+  // Remove selected from all
+  document.querySelectorAll('.tier-radio-option').forEach(el => el.classList.remove('selected'));
+  labelEl.classList.add('selected');
+  labelEl.querySelector('input[type=radio]').checked = true;
+  selectedManualTier = tierKey;
+}
+
+async function saveManual(){
+  const date = document.getElementById('man-date').value;
+  const site = document.getElementById('man-site').value;
+  if(!date) return toast('Missing Date','Please select a date.','error');
+
+  const tier = TIERS[selectedManualTier];
+  const d = new Date(date + 'T00:00:00');
+  const isOT = d.getDay() === 6;
+
+  await db.collection("ojt_logs").add({
+    date,
+    timeIn:  '08:00',
+    timeOut: tier.timeOut,
+    hours:   tier.hours,
+    site,
+    isOT
+  });
+
+  toast('Saved!', `${tier.hours}h added for ${date}${isOT?' (OT)':''}.`, 'success');
+  fetchOjtData();
 }
 
 /* =========================================================
@@ -562,23 +675,18 @@ let dtrMonth=new Date().getMonth();
 function dtrPrev(){dtrMonth--;if(dtrMonth<0){dtrMonth=11;dtrYear--;}renderDTR();}
 function dtrNext(){dtrMonth++;if(dtrMonth>11){dtrMonth=0;dtrYear++;}renderDTR();}
 
-/* All days Mon–Sat in a month */
 function workdaysInMonth(year,month){
   const days=[];
   const d=new Date(year,month,1);
   while(d.getMonth()===month){
     const dow=d.getDay();
-    if(dow>=1&&dow<=6) days.push(d.toISOString().split('T')[0]); // Mon–Sat
+    if(dow>=1&&dow<=6) days.push(d.toISOString().split('T')[0]);
     d.setDate(d.getDate()+1);
   }
   return days;
 }
 
-/* ─── Global week number helpers ─────────────────────────────
-   Week 1 = Feb 16, 2025 (Sunday) through Feb 22, 2025 (Saturday)
-   Week 2 = Feb 23 → Mar 1, and so on — never resets per month.
-──────────────────────────────────────────────────────────── */
-const DTR_EPOCH = new Date('2025-02-16T00:00:00'); // absolute Week-1 Sunday
+const DTR_EPOCH = new Date('2025-02-16T00:00:00');
 
 function globalWeekNum(dateStr){
   const d = new Date(dateStr + 'T00:00:00');
@@ -588,7 +696,6 @@ function globalWeekNum(dateStr){
 }
 
 function globalWeekSundayOf(weekNum){
-  // Returns the Sunday that starts that global week
   return new Date(DTR_EPOCH.getTime() + (weekNum - 1) * 7 * 86400000);
 }
 
@@ -601,12 +708,10 @@ function renderDTR(){
   const logMap = {};
   monthLogs.forEach(l => logMap[l.date] = l);
 
-  const allDays = workdaysInMonth(dtrYear, dtrMonth); // Mon–Sat
-
+  const allDays = workdaysInMonth(dtrYear, dtrMonth);
   let monthTotal = 0, monthOT = 0, daysWorked = 0;
 
-  // ── Group days into global weeks ─────────────────────────
-  const weekMap = new Map(); // weekNum → [dateStr, ...]
+  const weekMap = new Map();
   allDays.forEach(dateStr => {
     const wn = globalWeekNum(dateStr);
     if(wn === null) return;
@@ -615,7 +720,6 @@ function renderDTR(){
   });
 
   const sortedWeeks = [...weekMap.entries()].sort((a,b) => a[0]-b[0]);
-
   const SHORT_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
   function formatDate(dateStr){
@@ -627,16 +731,11 @@ function renderDTR(){
 
   sortedWeeks.forEach(([weekNum, days]) => {
     let weekTotal = 0, weekOT = 0;
-
-    // ── Week header row ──────────────────────────────────
     const wkSun = globalWeekSundayOf(weekNum);
     const wkSat = new Date(wkSun.getTime() + 6*86400000);
     const wkRange = `${SHORT_MONTHS[wkSun.getMonth()]} ${wkSun.getDate()} – ${SHORT_MONTHS[wkSat.getMonth()]} ${wkSat.getDate()}`;
-    tbodyHtml += `<tr class="week-header-row">
-      <td colspan="4">Week ${weekNum} &nbsp;·&nbsp; ${wkRange}</td>
-    </tr>`;
+    tbodyHtml += `<tr class="week-header-row"><td colspan="4">Week ${weekNum} &nbsp;·&nbsp; ${wkRange}</td></tr>`;
 
-    // ── Day rows ─────────────────────────────────────────
     days.forEach(dateStr => {
       const d = new Date(dateStr + 'T00:00:00');
       const isSat = d.getDay() === 6;
@@ -645,7 +744,7 @@ function renderDTR(){
 
       if(log){
         const tIn  = log.timeIn  || '08:00';
-        const tOut = effectiveTimeOut(log.timeOut);
+        const tOut = log.timeOut || '17:00';
         monthTotal += log.hours;
         weekTotal  += log.hours;
         daysWorked++;
@@ -674,7 +773,6 @@ function renderDTR(){
       }
     });
 
-    // ── Week total row ───────────────────────────────────
     const otLabel = weekOT > 0
       ? `<span style="color:var(--red);font-size:9px;margin-left:6px;">(${weekOT.toFixed(1)}h OT)</span>`
       : '';
@@ -684,7 +782,6 @@ function renderDTR(){
     </tr>`;
   });
 
-  // ── Month total row ──────────────────────────────────────
   const monthOTLabel = monthOT > 0
     ? `<span style="color:var(--red);font-size:9.5px;margin-left:6px;">(${monthOT.toFixed(1)}h OT)</span>`
     : '';
@@ -695,7 +792,6 @@ function renderDTR(){
 
   document.getElementById('dtr-tbody').innerHTML = tbodyHtml;
 
-  // ── Summary cards ────────────────────────────────────────
   const grandTotal = ALL_LOGS.reduce((s,l) => s + l.hours, 0);
   document.getElementById('dtr-month-total').textContent  = monthTotal.toFixed(1) + 'h';
   document.getElementById('dtr-days-worked').textContent  = daysWorked;
@@ -704,22 +800,16 @@ function renderDTR(){
 }
 
 /* =========================================================
-   JOURNAL — starts at Feb 16, 2025 as Week 1
+   JOURNAL
 ========================================================= */
-const OJT_START = new Date('2025-02-16T00:00:00'); // Week 1 anchor
+const OJT_START = new Date('2025-02-16T00:00:00');
 
 function getOJTWeek(dateStr){
   const d=new Date(dateStr+'T00:00:00');
-  // Monday of the week containing OJT_START
-  const startMonday=new Date(OJT_START);
-  // OJT_START is Feb 16 2025 = Sunday → Monday Feb 17? No, Feb 16 2025 is Sunday.
-  // But requirement says Feb 16–20. Feb 16 is a Sunday in 2025, so treat week as starting Sun.
-  // Actually: week 1 = Feb 16 (Sun) to Feb 20 (Thu). Let's treat week start = Sunday to Saturday.
-  const startSun=new Date(OJT_START); // Feb 16 = Sun
+  const startSun=new Date(OJT_START);
   const diffDays=Math.floor((d-startSun)/86400000);
   if(diffDays<0) return null;
-  const weekNum=Math.floor(diffDays/7)+1;
-  return weekNum;
+  return Math.floor(diffDays/7)+1;
 }
 
 function getWeekKey(dateStr){
@@ -780,7 +870,7 @@ function renderJournal(){
           <span class="jdr-day">${DAY_NAMES[d.getDay()]}, ${l.date}</span>
           ${isSat?'<span style="font-size:8.5px;background:var(--red);color:#fff;padding:1px 5px;border-radius:4px;margin-left:5px;">OT</span>':''}
         </div>
-        <div class="jdr-info">${to12hr(l.timeIn||'08:00')} → ${to12hr(effectiveTimeOut(l.timeOut))}</div>
+        <div class="jdr-info">${to12hr(l.timeIn||'08:00')} → ${to12hr(l.timeOut||'17:00')}</div>
         <span class="jdr-hrs">${l.hours.toFixed(1)}h</span>
       </div>`;
     }).join('');
@@ -888,8 +978,75 @@ const QUOTES=[
 document.getElementById('daily-quote').textContent=`"${QUOTES[Math.floor(Math.random()*QUOTES.length)]}"`;
 
 /* =========================================================
+   PWA — SERVICE WORKER & INSTALL PROMPT
+========================================================= */
+let deferredPrompt = null;
+
+// Register service worker (inline via blob for single-file deployment)
+if('serviceWorker' in navigator){
+  const swCode = `
+    const CACHE = 'ojt-v1';
+    const ASSETS = ['/'];
+    self.addEventListener('install', e => {
+      e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(()=>{}));
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', e => {
+      e.waitUntil(clients.claim());
+    });
+    self.addEventListener('fetch', e => {
+      if(e.request.method !== 'GET') return;
+      e.respondWith(
+        fetch(e.request).catch(() => caches.match(e.request))
+      );
+    });
+  `;
+  const blob = new Blob([swCode], {type:'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(()=>{});
+}
+
+// Capture install prompt
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Show banner after a short delay
+  setTimeout(() => {
+    const banner = document.getElementById('install-banner');
+    if(!sessionStorage.getItem('install-dismissed')) {
+      banner.classList.add('show');
+    }
+  }, 3000);
+});
+
+function installApp(){
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(choice => {
+    if(choice.outcome === 'accepted'){
+      toast('Installing…','App added to your home screen! 🎉','success');
+    }
+    deferredPrompt = null;
+    document.getElementById('install-banner').classList.remove('show');
+  });
+}
+
+function dismissInstall(){
+  document.getElementById('install-banner').classList.remove('show');
+  sessionStorage.setItem('install-dismissed','1');
+}
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('install-banner').classList.remove('show');
+  toast('Installed! 🎉','OJT Portal is now on your home screen.','success');
+});
+
+/* =========================================================
    INIT
 ========================================================= */
+// Set manual entry date to today (Manila timezone)
+document.getElementById('man-date').value = new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Manila'});
+
 fetchOjtData();
 fetchJournals();
 </script>
