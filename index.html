@@ -165,29 +165,37 @@ main{position:relative;z-index:1}
 /* PAYSLIP-STYLE DTR TABLE */
 .dtr-outer{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 18px var(--shadow-blue);border:1px solid var(--border);margin-bottom:14px;}
 .dtr-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-.dtr-table{width:100%;border-collapse:collapse;font-size:10px;}
+.dtr-table{width:100%;border-collapse:collapse;font-size:10px;min-width:520px;}
 .dtr-table .th-group{background:linear-gradient(135deg,var(--blue),var(--blue2));}
-.dtr-table .th-group th{color:#fff;font-weight:800;padding:10px 10px;text-align:center;font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;border:1px solid rgba(255,255,255,.15);}
-.dtr-table .th-group th.th-date{text-align:left;padding-left:14px;min-width:90px;}
+.dtr-table .th-group th{color:#fff;font-weight:800;padding:8px 7px;text-align:center;font-size:9px;text-transform:uppercase;letter-spacing:.6px;border:1px solid rgba(255,255,255,.15);}
+.dtr-table .th-group th.th-date{text-align:left;padding-left:12px;min-width:80px;}
+.dtr-table .th-group th.th-morning{background:rgba(0,0,0,.15)}
+.dtr-table .th-group th.th-afternoon{background:rgba(0,0,0,.2)}
+.dtr-table .th-group th.th-ot{background:rgba(192,24,43,.4)}
+.dtr-table .th-sub th{font-size:8.5px;font-weight:700;color:rgba(255,255,255,.85);padding:5px 7px;text-align:center;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.1)}
+.dtr-table .th-sub th.th-date-sub{text-align:left;padding-left:12px;background:transparent}
+.dtr-table .th-sub th.sub-ot{background:rgba(192,24,43,.35)}
+.dtr-table .th-sub th.sub-tot{background:rgba(0,0,0,.25)}
 .dtr-table tbody tr{border-bottom:1px solid rgba(0,62,138,.06);}
 .dtr-table tbody tr:nth-child(even){background:rgba(0,62,138,.02)}
-.dtr-table td{padding:9px 10px;text-align:center;color:#374151;font-size:10px;border:1px solid rgba(0,62,138,.06);vertical-align:middle;}
-.dtr-table td.td-date{font-weight:700;color:var(--dark2);font-size:10.5px;text-align:left;padding-left:14px;}
+.dtr-table td{padding:8px 7px;text-align:center;color:#374151;font-size:10px;border:1px solid rgba(0,62,138,.05);vertical-align:middle;}
+.dtr-table td.td-date{font-weight:700;color:var(--dark2);font-size:10.5px;text-align:left;padding-left:12px;}
 .dtr-table td.no-duty{color:#d1d5db;font-style:italic;font-size:9px;}
 .dtr-table td.time-val{font-weight:600;color:#1e3a6e;font-size:10px;}
 .dtr-table td.daily-total{font-weight:800;color:#1a1000;font-size:10.5px;background:rgba(255,193,7,.12);}
+.dtr-table td.ot-val{font-weight:600;color:var(--red);font-size:10px;background:rgba(192,24,43,.05);}
 .dtr-table tbody tr.sat-row{background:linear-gradient(90deg,rgba(192,24,43,.06),rgba(192,24,43,.02));}
 .dtr-table tbody tr.sat-row td.td-date{color:var(--red);}
 .dtr-table tbody tr.sat-row td.daily-total{background:rgba(192,24,43,.08);color:var(--red);}
 .dtr-table tbody tr.week-header-row td{
   background:linear-gradient(90deg,rgba(0,62,138,.09),rgba(0,62,138,.03));
   font-weight:800;font-size:9px;color:#4a6fa5;text-transform:uppercase;letter-spacing:1.2px;
-  padding:5px 14px;border-top:2px solid rgba(0,62,138,.15);text-align:left;
+  padding:5px 12px;border-top:2px solid rgba(0,62,138,.15);text-align:left;
 }
 .dtr-table tbody tr.week-total-row{background:linear-gradient(90deg,rgba(255,193,7,.16),rgba(255,193,7,.05));border-top:1.5px solid rgba(255,193,7,.4);}
-.dtr-table tbody tr.week-total-row td{font-weight:800;font-size:10px;color:#7a5500;padding:7px 10px;}
+.dtr-table tbody tr.week-total-row td{font-weight:800;font-size:10px;color:#7a5500;padding:7px 7px;}
 .dtr-table tbody tr.month-total-row{background:linear-gradient(90deg,rgba(0,62,138,.14),rgba(0,62,138,.04));border-top:2.5px solid rgba(0,62,138,.35);}
-.dtr-table tbody tr.month-total-row td{font-weight:900;font-size:11px;color:var(--blue);padding:10px 10px;}
+.dtr-table tbody tr.month-total-row td{font-weight:900;font-size:11px;color:var(--blue);padding:10px 7px;}
 
 /* DTR Summary cards */
 .dtr-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
@@ -225,6 +233,36 @@ main{position:relative;z-index:1}
 .week1-badge{display:inline-block;background:linear-gradient(135deg,var(--yellow),var(--yellow2));color:#7a5500;font-size:8.5px;font-weight:800;padding:2px 8px;border-radius:6px;margin-left:7px;vertical-align:middle;text-transform:uppercase;letter-spacing:.5px;}
 .no-logs-week{font-size:11px;color:#b0bad4;font-style:italic;padding:6px 0 4px;}
 
+/* LOG PILL ACTION BUTTONS */
+.pill-actions{display:flex;gap:6px;align-items:center;margin-left:8px;flex-shrink:0}
+.btn-edit,.btn-del{border:none;border-radius:8px;padding:6px 10px;font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;cursor:pointer;transition:all .18s;flex-shrink:0}
+.btn-edit{background:rgba(0,98,212,.1);color:var(--blue2)}
+.btn-edit:active{background:rgba(0,98,212,.22)}
+.btn-del{background:rgba(192,24,43,.1);color:var(--red)}
+.btn-del:active{background:rgba(192,24,43,.22)}
+
+/* EDIT MODAL */
+#edit-modal{position:fixed;inset:0;z-index:8000;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45);backdrop-filter:blur(4px)}
+#edit-modal.open{display:flex}
+.edit-sheet{background:#fff;border-radius:24px 24px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom));width:100%;max-width:500px;animation:slideUp .3s cubic-bezier(.16,1,.3,1)}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.edit-sheet-title{font-size:14px;font-weight:800;color:var(--dark2);margin-bottom:18px}
+.edit-sheet-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;color:#9ca3af;margin-bottom:6px}
+.edit-save-btn{width:100%;padding:15px;border-radius:13px;font-family:'Poppins',sans-serif;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 5px 16px var(--shadow-blue);margin-top:6px;transition:all .2s}
+.edit-save-btn:active{transform:scale(.97)}
+.edit-cancel-btn{width:100%;padding:13px;border-radius:13px;font-family:'Poppins',sans-serif;font-weight:700;font-size:12px;border:none;cursor:pointer;background:var(--offwh);color:#374151;margin-top:8px}
+
+/* CONFIRM DELETE MODAL */
+#del-modal{position:fixed;inset:0;z-index:8001;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.5);backdrop-filter:blur(4px)}
+#del-modal.open{display:flex}
+.del-sheet{background:#fff;border-radius:20px;padding:26px 22px;width:88%;max-width:340px;text-align:center;animation:popIn .25s cubic-bezier(.16,1,.3,1)}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.del-icon{font-size:36px;margin-bottom:12px}
+.del-title{font-size:16px;font-weight:800;color:var(--dark2);margin-bottom:6px}
+.del-sub{font-size:12px;font-weight:500;color:#6b7280;margin-bottom:20px;line-height:1.5}
+.del-confirm-btn{width:100%;padding:14px;border-radius:13px;font-family:'Poppins',sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;box-shadow:0 5px 16px var(--shadow-red);margin-bottom:10px}
+.del-cancel-btn{width:100%;padding:13px;border-radius:13px;font-family:'Poppins',sans-serif;font-weight:700;font-size:12px;border:none;cursor:pointer;background:var(--offwh);color:#374151}
+
 /* TOAST */
 #toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-30px);min-width:270px;max-width:90vw;background:#fff;border-radius:17px;padding:14px 18px;box-shadow:0 18px 48px rgba(0,0,0,.16);z-index:9999;display:none;opacity:0;transition:all .38s cubic-bezier(.16,1,.3,1);}
 #toast.show{display:flex;opacity:1;transform:translateX(-50%) translateY(0)}
@@ -255,6 +293,56 @@ main{position:relative;z-index:1}
   <div><p id="toast-title" class="toast-title"></p><p id="toast-msg" class="toast-msg"></p></div>
 </div></div>
 
+<!-- EDIT MODAL -->
+<div id="edit-modal">
+  <div class="edit-sheet">
+    <p class="edit-sheet-title">✏️ Edit Entry</p>
+    <input type="hidden" id="edit-doc-id">
+    <p class="edit-sheet-lbl">Date</p>
+    <input type="date" id="edit-date" class="form-input">
+    <p class="edit-sheet-lbl">Hours Tier</p>
+    <div class="tier-radio-group" id="edit-tier-group">
+      <label class="tier-radio-option tier-r-regular selected" onclick="selectEditTier(this,'regular')">
+        <input type="radio" name="edit-tier" value="regular" checked>
+        <div class="tier-radio-dot"></div>
+        <div class="tier-radio-info"><div class="tier-radio-hrs">8.0h — Regular</div><div class="tier-radio-desc">Time Out 5:00 PM</div></div>
+        <span class="tier-tag tag-regular">Regular</span>
+      </label>
+      <label class="tier-radio-option tier-r-extended" onclick="selectEditTier(this,'extended')">
+        <input type="radio" name="edit-tier" value="extended">
+        <div class="tier-radio-dot"></div>
+        <div class="tier-radio-info"><div class="tier-radio-hrs">9.0h — Extended</div><div class="tier-radio-desc">Time Out 6:06 PM</div></div>
+        <span class="tier-tag tag-extended">Extended</span>
+      </label>
+      <label class="tier-radio-option tier-r-holiday" onclick="selectEditTier(this,'holiday')">
+        <input type="radio" name="edit-tier" value="holiday">
+        <div class="tier-radio-dot"></div>
+        <div class="tier-radio-info"><div class="tier-radio-hrs">9.5h — Holiday Week</div><div class="tier-radio-desc">Time Out 6:30 PM</div></div>
+        <span class="tier-tag tag-holiday">Holiday</span>
+      </label>
+    </div>
+    <p class="edit-sheet-lbl">Site</p>
+    <select class="form-select" id="edit-site">
+      <option>ChemPaints - TICC - Pilit</option>
+      <option>iPak - TIPC - Tingub</option>
+      <option>IT Main - TIIC - Bakilid</option>
+      <option>Admin - Corporate (TIIC) - Reclamation</option>
+    </select>
+    <button class="edit-save-btn" onclick="saveEdit()">💾 Save Changes</button>
+    <button class="edit-cancel-btn" onclick="closeEditModal()">Cancel</button>
+  </div>
+</div>
+<!-- DELETE CONFIRM MODAL -->
+<div id="del-modal">
+  <div class="del-sheet">
+    <div class="del-icon">🗑️</div>
+    <p class="del-title">Delete Entry?</p>
+    <p class="del-sub" id="del-sub-text">This will permanently remove this log entry.</p>
+    <input type="hidden" id="del-doc-id">
+    <button class="del-confirm-btn" onclick="confirmDelete()">Yes, Delete</button>
+    <button class="del-cancel-btn" onclick="closeDelModal()">Cancel</button>
+  </div>
+</div>
 <!-- PWA INSTALL BANNER -->
 <div id="install-banner">
   <div class="install-text">
@@ -428,10 +516,18 @@ main{position:relative;z-index:1}
       <table class="dtr-table">
         <thead>
           <tr class="th-group">
-            <th class="th-date">Date</th>
-            <th>Time In</th>
-            <th>Time Out</th>
-            <th>Daily Total</th>
+            <th class="th-date" rowspan="2">Date</th>
+            <th colspan="2" class="th-morning">Morning</th>
+            <th colspan="2" class="th-afternoon">Afternoon</th>
+            <th colspan="2" class="th-ot">Overtime (Sat)</th>
+            <th rowspan="2" style="background:rgba(0,0,0,.25);min-width:44px">Daily<br>Hrs</th>
+          </tr>
+          <tr class="th-sub">
+            <th class="th-date-sub"></th>
+            <th>IN</th><th>OUT</th>
+            <th>IN</th><th>OUT</th>
+            <th class="sub-ot">IN</th><th class="sub-ot">OUT</th>
+            <th class="sub-tot"></th>
           </tr>
         </thead>
         <tbody id="dtr-tbody"></tbody>
@@ -596,11 +692,17 @@ function renderLogsList(){
   document.getElementById('logs-list').innerHTML=sorted.length
     ? sorted.map(l=>`
         <div class="log-pill${l.isOT?' overtime-pill':''}">
-          <div>
+          <div style="flex:1;min-width:0">
             <p class="log-date">${l.date}${l.isOT?' <span style="font-size:9px;background:var(--red);color:#fff;padding:1px 6px;border-radius:5px;margin-left:4px;">OT</span>':''}</p>
             <p class="log-site">${l.site||'TIIC'} · In: ${to12hr(l.timeIn||'08:00')} → Out: ${to12hr(effectiveTimeOut(l.timeOut))}</p>
           </div>
-          <p class="log-hrs">${l.hours.toFixed(1)}h</p>
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+            <p class="log-hrs">${l.hours.toFixed(1)}h</p>
+            <div class="pill-actions">
+              <button class="btn-edit" onclick="openEditModal('${l.id}')">✏️</button>
+              <button class="btn-del" onclick="openDelModal('${l.id}','${l.date}')">🗑️</button>
+            </div>
+          </div>
         </div>`).join('')
     : '<div class="empty-state">No entries yet.</div>';
 }
@@ -686,7 +788,8 @@ function workdaysInMonth(year,month){
   return days;
 }
 
-const DTR_EPOCH = new Date('2025-02-16T00:00:00');
+// OJT starts Feb 16, 2026 — this is Week 1
+const DTR_EPOCH = new Date('2026-02-16T00:00:00');
 
 function globalWeekNum(dateStr){
   const d = new Date(dateStr + 'T00:00:00');
@@ -724,50 +827,64 @@ function renderDTR(){
 
   function formatDate(dateStr){
     const d = new Date(dateStr + 'T00:00:00');
-    return `${SHORT_MONTHS[d.getMonth()]} ${d.getDate()}`;
+    const dow = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
+    return `${dow} ${SHORT_MONTHS[d.getMonth()]} ${d.getDate()}`;
   }
+
+  // empty cell helper
+  const E = `<td class="no-duty">—</td>`;
 
   let tbodyHtml = '';
 
   sortedWeeks.forEach(([weekNum, days]) => {
     let weekTotal = 0, weekOT = 0;
-    const wkSun = globalWeekSundayOf(weekNum);
-    const wkSat = new Date(wkSun.getTime() + 6*86400000);
-    const wkRange = `${SHORT_MONTHS[wkSun.getMonth()]} ${wkSun.getDate()} – ${SHORT_MONTHS[wkSat.getMonth()]} ${wkSat.getDate()}`;
-    tbodyHtml += `<tr class="week-header-row"><td colspan="4">Week ${weekNum} &nbsp;·&nbsp; ${wkRange}</td></tr>`;
+    const wkStart = globalWeekSundayOf(weekNum);
+    const wkEnd   = new Date(wkStart.getTime() + 6*86400000);
+    const wkRange = `${SHORT_MONTHS[wkStart.getMonth()]} ${wkStart.getDate()} – ${SHORT_MONTHS[wkEnd.getMonth()]} ${wkEnd.getDate()}`;
+    tbodyHtml += `<tr class="week-header-row"><td colspan="8">Week ${weekNum} &nbsp;·&nbsp; ${wkRange}</td></tr>`;
 
     days.forEach(dateStr => {
-      const d = new Date(dateStr + 'T00:00:00');
-      const isSat = d.getDay() === 6;
+      const d      = new Date(dateStr + 'T00:00:00');
+      const isSat  = d.getDay() === 6;
       const dateLabel = formatDate(dateStr);
-      const log = logMap[dateStr];
+      const log    = logMap[dateStr];
+      const rowCls = isSat ? ' class="sat-row"' : '';
+      const otBadge = isSat ? ` <span style="font-size:7.5px;background:var(--red);color:#fff;padding:1px 5px;border-radius:4px;font-weight:800;">OT</span>` : '';
 
       if(log){
-        const tIn  = log.timeIn  || '08:00';
-        const tOut = log.timeOut || '17:00';
         monthTotal += log.hours;
         weekTotal  += log.hours;
         daysWorked++;
         if(isSat){ weekOT += log.hours; monthOT += log.hours; }
 
-        const otBadge = isSat
-          ? ` <span style="font-size:7.5px;background:var(--red);color:#fff;padding:1px 5px;border-radius:4px;font-weight:800;">⚡ OT</span>`
-          : '';
+        const tIn  = to12hr(log.timeIn  || '08:00');
+        const tOut = to12hr(log.timeOut || '17:00');
 
-        tbodyHtml += `<tr${isSat?' class="sat-row"':''}>
-          <td class="td-date">${dateLabel}${otBadge}</td>
-          <td class="time-val">${to12hr(tIn)}</td>
-          <td class="time-val">${to12hr(tOut)}</td>
-          <td class="daily-total">${log.hours.toFixed(1)}h${isSat?' <span style="font-size:8px;color:var(--red);font-weight:700;">OT</span>':''}</td>
-        </tr>`;
+        if(isSat){
+          // Saturday: OT columns filled, morning/afternoon empty
+          tbodyHtml += `<tr${rowCls}>
+            <td class="td-date">${dateLabel}${otBadge}</td>
+            ${E}${E}${E}${E}
+            <td class="ot-val">${tIn}</td>
+            <td class="ot-val">${tOut}</td>
+            <td class="daily-total">${log.hours.toFixed(1)}h</td>
+          </tr>`;
+        } else {
+          // Regular weekday: morning IN only + afternoon OUT (matching your physical DTR)
+          tbodyHtml += `<tr${rowCls}>
+            <td class="td-date">${dateLabel}</td>
+            <td class="time-val">${tIn}</td>
+            ${E}
+            ${E}
+            <td class="time-val">${tOut}</td>
+            ${E}${E}
+            <td class="daily-total">${log.hours.toFixed(1)}h</td>
+          </tr>`;
+        }
       } else {
-        const otBadge = isSat
-          ? ` <span style="font-size:7.5px;background:rgba(192,24,43,.25);color:#fff;padding:1px 5px;border-radius:4px;">⚡ OT</span>`
-          : '';
-        tbodyHtml += `<tr${isSat?' class="sat-row"':''}>
+        tbodyHtml += `<tr${rowCls}>
           <td class="td-date" style="color:${isSat?'var(--red)':'#d1d5db'}">${dateLabel}${otBadge}</td>
-          <td class="no-duty">—</td>
-          <td class="no-duty">—</td>
+          ${E}${E}${E}${E}${E}${E}
           <td class="no-duty">—</td>
         </tr>`;
       }
@@ -777,7 +894,7 @@ function renderDTR(){
       ? `<span style="color:var(--red);font-size:9px;margin-left:6px;">(${weekOT.toFixed(1)}h OT)</span>`
       : '';
     tbodyHtml += `<tr class="week-total-row">
-      <td colspan="3" style="text-align:left;padding-left:14px;">📅 Week ${weekNum} Total ${otLabel}</td>
+      <td colspan="7" style="text-align:left;padding-left:12px;">📅 Week ${weekNum} Total ${otLabel}</td>
       <td>${weekTotal.toFixed(1)}h</td>
     </tr>`;
   });
@@ -786,7 +903,7 @@ function renderDTR(){
     ? `<span style="color:var(--red);font-size:9.5px;margin-left:6px;">(${monthOT.toFixed(1)}h OT)</span>`
     : '';
   tbodyHtml += `<tr class="month-total-row">
-    <td colspan="3" style="text-align:left;padding-left:14px;">🏁 Month Total ${monthOTLabel}</td>
+    <td colspan="7" style="text-align:left;padding-left:12px;">🏁 Month Total ${monthOTLabel}</td>
     <td>${monthTotal.toFixed(1)}h</td>
   </tr>`;
 
@@ -802,7 +919,7 @@ function renderDTR(){
 /* =========================================================
    JOURNAL
 ========================================================= */
-const OJT_START = new Date('2025-02-16T00:00:00');
+const OJT_START = new Date('2026-02-16T00:00:00');
 
 function getOJTWeek(dateStr){
   const d=new Date(dateStr+'T00:00:00');
@@ -940,6 +1057,97 @@ function editJournal(wk){
 function escHtml(str){
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
+
+/* =========================================================
+   EDIT & DELETE
+========================================================= */
+let selectedEditTier = 'regular';
+
+function openEditModal(docId){
+  const log = ALL_LOGS.find(l => l.id === docId);
+  if(!log) return;
+
+  document.getElementById('edit-doc-id').value = docId;
+  document.getElementById('edit-date').value    = log.date;
+
+  // Detect tier from hours
+  let tierKey = 'regular';
+  if(log.hours >= 9.4)       tierKey = 'holiday';
+  else if(log.hours >= 8.9)  tierKey = 'extended';
+
+  selectedEditTier = tierKey;
+  // Reset radio visuals
+  document.querySelectorAll('#edit-tier-group .tier-radio-option').forEach(el => el.classList.remove('selected'));
+  const tgtLabel = document.querySelector(`#edit-tier-group .tier-r-${tierKey}`);
+  if(tgtLabel){
+    tgtLabel.classList.add('selected');
+    tgtLabel.querySelector('input').checked = true;
+  }
+
+  // Set site
+  const siteEl = document.getElementById('edit-site');
+  for(let i=0; i<siteEl.options.length; i++){
+    if(siteEl.options[i].value === log.site){ siteEl.selectedIndex = i; break; }
+  }
+
+  document.getElementById('edit-modal').classList.add('open');
+}
+
+function closeEditModal(){
+  document.getElementById('edit-modal').classList.remove('open');
+}
+
+function selectEditTier(labelEl, tierKey){
+  document.querySelectorAll('#edit-tier-group .tier-radio-option').forEach(el => el.classList.remove('selected'));
+  labelEl.classList.add('selected');
+  labelEl.querySelector('input').checked = true;
+  selectedEditTier = tierKey;
+}
+
+async function saveEdit(){
+  const docId = document.getElementById('edit-doc-id').value;
+  const date  = document.getElementById('edit-date').value;
+  const site  = document.getElementById('edit-site').value;
+  if(!date) return toast('Missing Date','Please select a date.','error');
+
+  const tier  = TIERS[selectedEditTier];
+  const d     = new Date(date + 'T00:00:00');
+  const isOT  = d.getDay() === 6;
+
+  await db.collection("ojt_logs").doc(docId).update({
+    date, timeIn:'08:00', timeOut: tier.timeOut, hours: tier.hours, site, isOT
+  });
+
+  closeEditModal();
+  toast('Updated!', `Entry for ${date} updated.`, 'success');
+  fetchOjtData();
+}
+
+function openDelModal(docId, dateStr){
+  document.getElementById('del-doc-id').value = docId;
+  document.getElementById('del-sub-text').textContent = `This will permanently remove the entry for ${dateStr}.`;
+  document.getElementById('del-modal').classList.add('open');
+}
+
+function closeDelModal(){
+  document.getElementById('del-modal').classList.remove('open');
+}
+
+async function confirmDelete(){
+  const docId = document.getElementById('del-doc-id').value;
+  await db.collection("ojt_logs").doc(docId).delete();
+  closeDelModal();
+  toast('Deleted','Entry removed.','success');
+  fetchOjtData();
+}
+
+// Close modals on backdrop tap
+document.getElementById('edit-modal').addEventListener('click', function(e){
+  if(e.target === this) closeEditModal();
+});
+document.getElementById('del-modal').addEventListener('click', function(e){
+  if(e.target === this) closeDelModal();
+});
 
 /* =========================================================
    TAB NAV
