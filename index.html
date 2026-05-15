@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TIIC OJT Portal – Reymark M. Ejes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --blue:#003f8a;--blue2:#0062d4;--blue3:#004aaa;
+  --red:#c0182b;--red2:#e8293d;
+  --yellow:#ffc107;--yellow2:#ffe566;
+  --dark:#0a0f1e;--dark2:#111827;
+  --offwh:#f4f6fb;--white:#fff;
+  --border:rgba(0,62,138,.09);
+  --shadow-blue:rgba(0,62,138,.18);
+  --shadow-red:rgba(192,24,43,.18);
+  --green:#1a7a42;--green2:#22a356;
+}
+html,body{height:100%;overflow-x:hidden}
+body{font-family:'Poppins',sans-serif;background:var(--offwh);min-height:100vh;position:relative;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 55% at 8% 0%,rgba(0,62,138,.11) 0%,transparent 70%),
+    radial-gradient(ellipse 55% 45% at 92% 98%,rgba(192,24,43,.09) 0%,transparent 70%),
+    radial-gradient(ellipse 45% 45% at 50% 50%,rgba(255,193,7,.05) 0%,transparent 80%);}
+main{position:relative;z-index:1}
+
+/* HEADER */
+.site-header{background:linear-gradient(135deg,var(--blue) 0%,#001e56 55%,#1c0508 100%);position:relative;overflow:hidden;}
+.site-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--yellow),var(--red2),var(--blue2),var(--yellow));
+  background-size:300%;animation:shimmer 4s linear infinite;}
+@keyframes shimmer{0%{background-position:300% center}100%{background-position:-300% center}}
+.header-inner{padding:20px 18px 14px;display:flex;justify-content:space-between;align-items:flex-start}
+.header-badge{width:42px;height:42px;flex-shrink:0;background:linear-gradient(135deg,var(--red),var(--red2));border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff;box-shadow:0 4px 14px rgba(192,24,43,.45);}
+.header-name{font-size:20px;font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.3px}
+.header-role{font-size:10px;font-weight:600;color:var(--yellow);text-transform:uppercase;letter-spacing:1.4px;margin-top:3px}
+.quote-bar{margin:0 18px 18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);border-radius:11px;padding:10px 13px;font-size:10.5px;font-style:italic;font-weight:400;color:rgba(255,255,255,.7);}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(0deg,var(--dark) 0%,#001535 100%);border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:1000;}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 14px;border-radius:12px;border:none;background:transparent;cursor:pointer;font-family:'Poppins',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.28);transition:all .22s;}
+.nav-btn .ico{font-size:19px;transition:transform .22s}
+.nav-btn.active{color:var(--yellow);background:rgba(255,193,7,.08)}
+.nav-btn.active .ico{transform:scale(1.18)}
+
+/* CONTENT */
+.content-section{display:none;padding:16px 16px;margin-bottom:80px}
+.active-section{display:block;animation:fadeUp .35s cubic-bezier(.16,1,.3,1)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#7b8ab8;margin-bottom:11px;}
+
+/* HERO CARD */
+.hero-card{background:linear-gradient(145deg,var(--blue) 0%,#001d56 45%,var(--red) 130%);border-radius:26px;padding:26px 22px 20px;position:relative;overflow:hidden;box-shadow:0 18px 48px var(--shadow-blue),0 3px 14px rgba(0,0,0,.1);margin-bottom:16px;}
+.hero-card::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,193,7,.13) 0%,transparent 70%)}
+.hero-card::after{content:'';position:absolute;bottom:-35px;left:-35px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(192,24,43,.22) 0%,transparent 70%)}
+.hero-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:rgba(255,255,255,.5)}
+.hero-num{font-size:56px;font-weight:900;color:#fff;line-height:1;letter-spacing:-2px;margin:4px 0 2px;position:relative;z-index:2}
+.hero-sub{font-size:10.5px;font-weight:500;color:rgba(255,255,255,.55)}
+.prog-track{background:rgba(0,0,0,.28);border-radius:999px;height:10px;margin:16px 0 10px;overflow:hidden;position:relative;z-index:2}
+.prog-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--yellow),var(--yellow2),#fff8c0);box-shadow:0 0 14px rgba(255,200,7,.6);transition:width 1.3s cubic-bezier(.16,1,.3,1);position:relative}
+.prog-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:10px;background:#fff;border-radius:999px;box-shadow:0 0 8px rgba(255,255,255,.85)}
+.hero-stats{display:flex;justify-content:space-between;position:relative;z-index:2;flex-wrap:wrap;gap:8px;}
+.hstat-val{font-size:16px;font-weight:800;color:#fff}
+.hstat-lbl{font-size:9px;font-weight:600;color:rgba(255,255,255,.48);text-transform:uppercase;letter-spacing:.9px;margin-top:1px}
+
+/* TARGET DATE CARD */
+.target-card{background:linear-gradient(135deg,var(--green),var(--green2));border-radius:18px;padding:16px 18px;box-shadow:0 7px 22px rgba(26,122,66,.3);color:#fff;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+.target-icon{font-size:28px}
+.target-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;opacity:.7}
+.target-date{font-size:17px;font-weight:900;margin-top:2px}
+.target-days{font-size:10px;font-weight:600;opacity:.75;margin-top:1px}
+
+/* STAT GRID */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.stat-card{border-radius:18px;padding:18px 16px;position:relative;overflow:hidden}
+.sc-yellow{background:linear-gradient(135deg,var(--yellow),var(--yellow2));box-shadow:0 7px 22px rgba(255,193,7,.32);color:#1a1000}
+.sc-red{background:linear-gradient(135deg,var(--red),var(--red2));box-shadow:0 7px 22px var(--shadow-red);color:#fff}
+.sc-blue{background:linear-gradient(135deg,var(--blue),var(--blue2));box-shadow:0 7px 22px var(--shadow-blue);color:#fff}
+.sc-dark{background:linear-gradient(135deg,#1a2340,#2d3a5a);box-shadow:0 7px 22px rgba(10,15,30,.3);color:#fff}
+.stat-card::before{content:'';position:absolute;top:-18px;right:-18px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.1)}
+.stat-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;opacity:.6}
+.stat-val{font-size:32px;font-weight:900;line-height:1.1;margin-top:3px}
+
+/* LOG PILL */
+.log-pill{background:#fff;border-radius:15px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px var(--shadow-blue);border:1px solid var(--border);margin-bottom:9px;position:relative;overflow:hidden;}
+.log-pill::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--blue2),var(--red))}
+.log-pill.overtime-pill::before{background:linear-gradient(180deg,var(--red),var(--red2))}
+.log-date{font-size:12.5px;font-weight:700;color:#111827}
+.log-site{font-size:9.5px;font-weight:500;color:#9ca3af;text-transform:uppercase;letter-spacing:.7px;margin-top:1px}
+.log-hrs{font-size:18px;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* CLOCK TAB */
+.clock-card{background:#fff;border-radius:26px;padding:28px 22px;box-shadow:0 7px 28px var(--shadow-blue);border:1px solid var(--border);text-align:center}
+.live-clock{font-size:46px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,var(--blue),var(--blue2) 50%,var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:26px;}
+.field-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#9ca3af;margin-bottom:7px;text-align:left}
+.form-select,.form-input{width:100%;background:var(--offwh);border:2px solid var(--border);border-radius:13px;padding:13px 15px;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:#111827;appearance:none;margin-bottom:14px;transition:border-color .2s;}
+.form-select:focus,.form-input:focus{outline:none;border-color:var(--blue2)}
+.shift-btn{width:100%;padding:17px;border-radius:15px;font-family:'Poppins',sans-serif;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:1.8px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 8px 22px var(--shadow-blue);transition:all .2s;}
+.shift-btn:active{transform:scale(.97)}
+.shift-btn.ending{background:linear-gradient(135deg,var(--red),var(--red2));box-shadow:0 8px 22px var(--shadow-red)}
+
+/* MANUAL ENTRY CARD */
+.entry-card{background:#fff;border-radius:22px;padding:20px 18px;box-shadow:0 4px 18px var(--shadow-blue);border:1px solid var(--border);margin-bottom:16px}
+.entry-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:#7b8ab8;margin-bottom:14px}
+.time-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.save-btn{width:100%;padding:15px;border-radius:13px;font-family:'Poppins',sans-serif;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:1.8px;border:none;cursor:pointer;margin-top:6px;background:linear-gradient(135deg,var(--dark2),#374151);color:#fff;box-shadow:0 5px 16px rgba(17,24,39,.28);transition:all .2s}
+.save-btn:active{transform:scale(.97)}
+
+/* ===================== DTR TAB ===================== */
+.dtr-nav{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 4px 18px var(--shadow-blue);border:1px solid var(--border);margin-bottom:14px;}
+.dtr-month-title{font-size:17px;font-weight:800;color:var(--blue)}
+.dtr-year{font-size:11px;font-weight:600;color:#7b8ab8;margin-top:1px}
+.dtr-arrow{width:36px;height:36px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px var(--shadow-blue);transition:all .18s;flex-shrink:0;}
+.dtr-arrow:active{transform:scale(.93)}
+
+/* PAYSLIP-STYLE DTR TABLE */
+.dtr-outer{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 18px var(--shadow-blue);border:1px solid var(--border);margin-bottom:14px;}
+.dtr-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.dtr-table{width:100%;border-collapse:collapse;font-size:10px;}
+
+/* Header row */
+.dtr-table .th-group{background:linear-gradient(135deg,var(--blue),var(--blue2));}
+.dtr-table .th-group th{color:#fff;font-weight:800;padding:10px 10px;text-align:center;font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;border:1px solid rgba(255,255,255,.15);}
+.dtr-table .th-group th.th-date{text-align:left;padding-left:14px;min-width:90px;}
+
+/* Body cells */
+.dtr-table tbody tr{border-bottom:1px solid rgba(0,62,138,.06);}
+.dtr-table tbody tr:nth-child(even){background:rgba(0,62,138,.02)}
+.dtr-table td{padding:9px 10px;text-align:center;color:#374151;font-size:10px;border:1px solid rgba(0,62,138,.06);vertical-align:middle;}
+.dtr-table td.td-date{font-weight:700;color:var(--dark2);font-size:10.5px;text-align:left;padding-left:14px;}
+.dtr-table td.no-duty{color:#d1d5db;font-style:italic;font-size:9px;}
+.dtr-table td.time-val{font-weight:600;color:#1e3a6e;font-size:10px;}
+.dtr-table td.daily-total{font-weight:800;color:#1a1000;font-size:10.5px;background:rgba(255,193,7,.12);}
+
+/* Saturday row highlight */
+.dtr-table tbody tr.sat-row{background:linear-gradient(90deg,rgba(192,24,43,.06),rgba(192,24,43,.02));}
+.dtr-table tbody tr.sat-row td.td-date{color:var(--red);}
+.dtr-table tbody tr.sat-row td.daily-total{background:rgba(192,24,43,.08);color:var(--red);}
+
+/* Week header row */
+.dtr-table tbody tr.week-header-row td{
+  background:linear-gradient(90deg,rgba(0,62,138,.09),rgba(0,62,138,.03));
+  font-weight:800;font-size:9px;color:#4a6fa5;text-transform:uppercase;letter-spacing:1.2px;
+  padding:5px 14px;border-top:2px solid rgba(0,62,138,.15);text-align:left;
+}
+
+/* Week total row */
+.dtr-table tbody tr.week-total-row{background:linear-gradient(90deg,rgba(255,193,7,.16),rgba(255,193,7,.05));border-top:1.5px solid rgba(255,193,7,.4);}
+.dtr-table tbody tr.week-total-row td{font-weight:800;font-size:10px;color:#7a5500;padding:7px 10px;}
+
+/* Month total row */
+.dtr-table tbody tr.month-total-row{background:linear-gradient(90deg,rgba(0,62,138,.14),rgba(0,62,138,.04));border-top:2.5px solid rgba(0,62,138,.35);}
+.dtr-table tbody tr.month-total-row td{font-weight:900;font-size:11px;color:var(--blue);padding:10px 10px;}
+
+/* DTR Summary cards */
+.dtr-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.dtr-sum-card{background:#fff;border-radius:15px;padding:14px 14px;box-shadow:0 3px 12px var(--shadow-blue);border:1px solid var(--border)}
+.dtr-sum-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#9ca3af}
+.dtr-sum-val{font-size:22px;font-weight:900;margin-top:3px}
+.dtr-sum-val.blue{background:linear-gradient(135deg,var(--blue),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.dtr-sum-val.red{background:linear-gradient(135deg,var(--red),var(--red2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.dtr-sum-val.green{color:var(--green)}
+.dtr-sum-val.yellow{color:#b58000}
+
+/* OT legend badge */
+.ot-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;color:var(--red);background:rgba(192,24,43,.08);border:1px solid rgba(192,24,43,.18);border-radius:8px;padding:4px 9px;margin-bottom:10px;}
+
+/* ===================== JOURNAL TAB ===================== */
+.journal-week-card{background:#fff;border-radius:20px;box-shadow:0 4px 18px var(--shadow-blue);border:1px solid var(--border);margin-bottom:14px;overflow:hidden}
+.journal-week-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;background:linear-gradient(135deg,rgba(0,62,138,.07),rgba(0,62,138,.02));border-bottom:1px solid var(--border);}
+.jwh-title{font-size:13px;font-weight:800;color:var(--blue)}
+.jwh-dates{font-size:10px;font-weight:500;color:#9ca3af;margin-top:2px}
+.jwh-hours{font-size:12px;font-weight:800;color:var(--red)}
+.jwh-chevron{font-size:14px;color:#cbd5e0;transition:transform .22s}
+.jwh-chevron.open{transform:rotate(180deg)}
+.journal-body{display:none;padding:14px 16px}
+.journal-body.open{display:block}
+.journal-days-list{margin-bottom:12px}
+.journal-day-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(0,62,138,.06)}
+.journal-day-row:last-child{border-bottom:none}
+.jdr-day{font-size:11.5px;font-weight:700;color:#374151}
+.jdr-info{font-size:10.5px;font-weight:500;color:#9ca3af}
+.jdr-hrs{font-size:12px;font-weight:800;color:var(--blue)}
+.journal-textarea{width:100%;background:var(--offwh);border:2px solid var(--border);border-radius:13px;padding:13px 14px;font-family:'Poppins',sans-serif;font-size:12.5px;font-weight:400;color:#111827;resize:none;min-height:110px;transition:border-color .2s;line-height:1.65;}
+.journal-textarea:focus{outline:none;border-color:var(--blue2)}
+.journal-save-btn{width:100%;margin-top:9px;padding:13px;border-radius:13px;font-family:'Poppins',sans-serif;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:1.5px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 5px 16px var(--shadow-blue);transition:all .2s;}
+.journal-save-btn:active{transform:scale(.97)}
+.journal-saved-note{font-size:11.5px;color:#374151;line-height:1.65;font-weight:400;white-space:pre-wrap;background:var(--offwh);border-radius:12px;padding:12px;margin-top:8px;border:1px solid var(--border)}
+.journal-edit-btn{font-size:10px;font-weight:700;color:var(--blue2);background:none;border:none;cursor:pointer;padding:4px 0;text-transform:uppercase;letter-spacing:.8px;margin-top:6px}
+.week1-badge{display:inline-block;background:linear-gradient(135deg,var(--yellow),var(--yellow2));color:#7a5500;font-size:8.5px;font-weight:800;padding:2px 8px;border-radius:6px;margin-left:7px;vertical-align:middle;text-transform:uppercase;letter-spacing:.5px;}
+.no-logs-week{font-size:11px;color:#b0bad4;font-style:italic;padding:6px 0 4px;}
+
+/* TOAST */
+#toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-30px);min-width:270px;max-width:90vw;background:#fff;border-radius:17px;padding:14px 18px;box-shadow:0 18px 48px rgba(0,0,0,.16);z-index:9999;display:none;opacity:0;transition:all .38s cubic-bezier(.16,1,.3,1);}
+#toast.show{display:flex;opacity:1;transform:translateX(-50%) translateY(0)}
+.toast-inner{display:flex;align-items:center;gap:13px}
+.toast-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ti-success{background:linear-gradient(135deg,var(--yellow),var(--yellow2))}
+.ti-error{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff}
+.toast-title{font-size:13px;font-weight:800;color:#111827}
+.toast-msg{font-size:10.5px;color:#6b7280;font-weight:500;margin-top:1px}
+.empty-state{text-align:center;padding:24px;color:#b0bad4;font-size:12.5px;font-weight:500}
+</style>
+</head>
+<body>
+<main>
+
+<!-- TOAST -->
+<div id="toast"><div class="toast-inner">
+  <div id="toast-icon" class="toast-icon ti-success">✓</div>
+  <div><p id="toast-title" class="toast-title"></p><p id="toast-msg" class="toast-msg"></p></div>
+</div></div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div>
+      <h1 class="header-name">Reymark M. Ejes</h1>
+      <p class="header-role">IT OJT Student · TIIC</p>
+    </div>
+    <div class="header-badge">IT</div>
+  </div>
+  <div class="quote-bar" id="daily-quote">"Loading motivation..."</div>
+</header>
+
+<!-- ===================== DASHBOARD ===================== -->
+<section id="dash-sec" class="content-section active-section">
+  <div class="hero-card">
+    <p class="hero-lbl">Hours Remaining</p>
+    <div class="hero-num" id="hours-left">729.0</div>
+    <p class="hero-sub">of 729h requirement</p>
+    <div class="prog-track"><div class="prog-fill" id="progress-bar" style="width:0%"></div></div>
+    <div class="hero-stats">
+      <div><p class="hstat-lbl">Total Earned</p><p class="hstat-val" id="hours-earned">0.0h</p></div>
+      <div><p class="hstat-lbl">Completion</p><p class="hstat-val" id="percent">0%</p></div>
+      <div style="text-align:right"><p class="hstat-lbl">OT Hours</p><p class="hstat-val" id="ot-hours-dash">0.0h</p></div>
+    </div>
+  </div>
+
+  <!-- TARGET DATE -->
+  <div class="target-card" id="target-card">
+    <div>
+      <p class="target-lbl">🎯 Estimated Finish Date</p>
+      <p class="target-date" id="target-date">—</p>
+      <p class="target-days" id="target-days">Start logging to see projection</p>
+    </div>
+    <div class="target-icon">🏁</div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card sc-yellow"><p class="stat-lbl">Days Logged</p><p class="stat-val" id="days-count">0</p></div>
+    <div class="stat-card sc-red"><p class="stat-lbl">Daily Avg</p><p class="stat-val" id="avg-hours">0h</p></div>
+  </div>
+  <p class="sec-label">Recent Entries</p>
+  <div id="recent-logs"></div>
+</section>
+
+<!-- ===================== CLOCK ===================== -->
+<section id="clock-sec" class="content-section">
+  <div class="clock-card">
+    <p style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:#9ca3af;margin-bottom:8px;">Current Time</p>
+    <div class="live-clock" id="live-time">--:--:--</div>
+    <div style="text-align:left">
+      <p class="field-lbl">Assignment Site</p>
+      <select class="form-select" id="site-select">
+        <option>ChemPaints - TICC - Pilit</option>
+        <option>iPak - TIPC - Tingub</option>
+        <option>IT Main - TIIC - Bakilid</option>
+        <option>Admin - Corporate (TIIC) - Reclamation</option>
+      </select>
+      <button class="shift-btn" id="shift-btn" onclick="toggleShift()">Start Shift</button>
+    </div>
+  </div>
+
+  <div class="entry-card" style="margin-top:16px">
+    <p class="entry-title">Manual Entry</p>
+    <div class="field-lbl">Date</div>
+    <input type="date" class="form-input" id="man-date">
+    <div class="time-grid">
+      <div>
+        <p class="field-lbl">Time In</p>
+        <input type="time" class="form-input" id="man-in" value="08:00">
+      </div>
+      <div>
+        <p class="field-lbl">Time Out</p>
+        <input type="time" class="form-input" id="man-out">
+      </div>
+    </div>
+    <div class="field-lbl" style="margin-top:4px">Site</div>
+    <select class="form-select" id="man-site">
+      <option>ChemPaints - TICC - Pilit</option>
+      <option>iPak - TIPC - Tingub</option>
+      <option>IT Main - TIIC - Bakilid</option>
+      <option>Admin - Corporate (TIIC) - Reclamation</option>
+    </select>
+    <button class="save-btn" onclick="saveManual()">+ Save Entry</button>
+  </div>
+
+  <p class="sec-label">All Log Entries</p>
+  <div id="logs-list"></div>
+</section>
+
+<!-- ===================== DTR ===================== -->
+<section id="dtr-sec" class="content-section">
+  <div class="dtr-nav">
+    <button class="dtr-arrow" onclick="dtrPrev()">◀</button>
+    <div style="text-align:center">
+      <p class="dtr-month-title" id="dtr-month-title">—</p>
+      <p class="dtr-year" id="dtr-year-title">—</p>
+    </div>
+    <button class="dtr-arrow" onclick="dtrNext()">▶</button>
+  </div>
+
+  <div class="ot-badge">🔴 Saturday = Overtime (IT Dept)</div>
+
+  <div class="dtr-outer">
+    <div class="dtr-scroll">
+      <table class="dtr-table">
+        <thead>
+          <tr class="th-group">
+            <th class="th-date">Date</th>
+            <th>Time In</th>
+            <th>Time Out</th>
+            <th>Daily Total</th>
+          </tr>
+        </thead>
+        <tbody id="dtr-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="dtr-summary">
+    <div class="dtr-sum-card"><p class="dtr-sum-lbl">This Month</p><p class="dtr-sum-val blue" id="dtr-month-total">0h</p></div>
+    <div class="dtr-sum-card"><p class="dtr-sum-lbl">Days Worked</p><p class="dtr-sum-val yellow" id="dtr-days-worked">0</p></div>
+    <div class="dtr-sum-card"><p class="dtr-sum-lbl">OT This Month</p><p class="dtr-sum-val red" id="dtr-ot-month">0h</p></div>
+    <div class="dtr-sum-card"><p class="dtr-sum-lbl">Remaining</p><p class="dtr-sum-val green" id="dtr-remaining">729h</p></div>
+  </div>
+</section>
+
+<!-- ===================== JOURNAL ===================== -->
+<section id="journal-sec" class="content-section">
+  <p class="sec-label">Weekly Reflections · Starting Feb 16</p>
+  <div id="journal-list"></div>
+</section>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="showTab('dash-sec',this)"><span class="ico">🏠</span>Home</button>
+  <button class="nav-btn" onclick="showTab('clock-sec',this)"><span class="ico">⏱</span>Clock</button>
+  <button class="nav-btn" onclick="showTab('dtr-sec',this);renderDTR()"><span class="ico">📋</span>DTR</button>
+  <button class="nav-btn" onclick="showTab('journal-sec',this)"><span class="ico">📓</span>Journal</button>
+</nav>
+
+</main>
+<script>
+/* =========================================================
+   FIREBASE CONFIG — replace with your own
+========================================================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyDGFz-wV8aw1O787bjy-XRVDW_wFZByYXU",
+  authDomain: "ojt-tracker-109b6.firebaseapp.com",
+  projectId: "ojt-tracker-109b6",
+  storageBucket: "ojt-tracker-109b6.firebasestorage.app",
+  messagingSenderId: "1046223253734",
+  appId: "1:1046223253734:web:314c870a30cc45c29bcb27"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let ALL_LOGS = [];
+
+/* =========================================================
+   TIME HELPERS
+========================================================= */
+// Convert "HH:MM" 24hr → "h:MM AM/PM"
+function to12hr(t){
+  if(!t||t==='—') return '—';
+  const [hh,mm]=t.split(':').map(Number);
+  if(isNaN(hh)||isNaN(mm)) return t;
+  const period=hh<12?'AM':'PM';
+  const h=hh===0?12:hh>12?hh-12:hh;
+  return `${h}:${String(mm).padStart(2,'0')} ${period}`;
+}
+
+function calcHours(tIn, tOut){
+  if(!tIn||!tOut) return 0;
+  const [ih,im]=tIn.split(':').map(Number);
+  const [oh,om]=tOut.split(':').map(Number);
+  const mins=(oh*60+om)-(ih*60+im);
+  return Math.max(0, mins/60);
+}
+
+// Effective time-out (use actual timeOut or current time if ongoing)
+function effectiveTimeOut(tOut){
+  return tOut || new Date().toTimeString().slice(0,5);
+}
+
+/* =========================================================
+   FETCH DATA
+========================================================= */
+async function fetchOjtData(){
+  const snap = await db.collection("ojt_logs").orderBy("date","desc").get();
+  ALL_LOGS = [];
+  snap.forEach(doc => {
+    const d = doc.data();
+    ALL_LOGS.push({ id: doc.id, ...d });
+  });
+  renderDash();
+  renderLogsList();
+  renderJournal();
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+function toast(title, msg, type='success'){
+  const el=document.getElementById('toast');
+  const icon=document.getElementById('toast-icon');
+  document.getElementById('toast-title').textContent=title;
+  document.getElementById('toast-msg').textContent=msg;
+  icon.className='toast-icon '+(type==='success'?'ti-success':'ti-error');
+  icon.textContent=type==='success'?'✓':'✕';
+  el.style.display='flex';
+  requestAnimationFrame(()=>el.classList.add('show'));
+  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.style.display='none',400);},3000);
+}
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+function renderDash(){
+  const TARGET=729;
+  const total=ALL_LOGS.reduce((s,l)=>s+l.hours,0);
+  const otTotal=ALL_LOGS.filter(l=>l.isOT).reduce((s,l)=>s+l.hours,0);
+  const days=ALL_LOGS.length;
+  const left=Math.max(0,TARGET-total).toFixed(1);
+  const pct=Math.min(100,(total/TARGET)*100).toFixed(1);
+
+  document.getElementById('hours-left').textContent=left;
+  document.getElementById('hours-earned').textContent=total.toFixed(1)+'h';
+  document.getElementById('percent').textContent=pct+'%';
+  document.getElementById('progress-bar').style.width=pct+'%';
+  document.getElementById('days-count').textContent=days;
+  document.getElementById('avg-hours').textContent=days>0?(total/days).toFixed(1)+'h':'0h';
+  document.getElementById('ot-hours-dash').textContent=otTotal.toFixed(1)+'h';
+
+  // Target finish date projection
+  if(days>0){
+    const avg=total/days;
+    const daysNeeded=Math.ceil(Math.max(0,TARGET-total)/avg);
+    const today=new Date();
+    // Count working days (Mon-Sat for IT, since Sat=OT)
+    let d=new Date(today);
+    let counted=0;
+    while(counted<daysNeeded){
+      d.setDate(d.getDate()+1);
+      const dow=d.getDay();
+      if(dow!==0) counted++; // Sun=0 is off; Mon–Sat count
+    }
+    const opts={weekday:'short',month:'long',day:'numeric',year:'numeric'};
+    document.getElementById('target-date').textContent=d.toLocaleDateString('en-PH',opts);
+    const diffDays=Math.round((d-today)/86400000);
+    document.getElementById('target-days').textContent=
+      diffDays<=0?'🎉 You\'re done!':
+      `~${diffDays} calendar days from today at current pace`;
+  } else {
+    document.getElementById('target-date').textContent='—';
+    document.getElementById('target-days').textContent='Start logging to see projection';
+  }
+
+  // Recent 3
+  const recent=[...ALL_LOGS].slice(0,3);
+  document.getElementById('recent-logs').innerHTML=recent.length
+    ? recent.map(l=>`
+        <div class="log-pill${l.isOT?' overtime-pill':''}">
+          <div>
+            <p class="log-date">${l.date}${l.isOT?' <span style="font-size:9px;background:var(--red);color:#fff;padding:1px 6px;border-radius:5px;margin-left:4px;">OT</span>':''}</p>
+            <p class="log-site">${l.site||'TIIC'} · ${to12hr(l.timeIn||'08:00')} → ${to12hr(effectiveTimeOut(l.timeOut))}</p>
+          </div>
+          <p class="log-hrs">${l.hours.toFixed(1)}h</p>
+        </div>`).join('')
+    : '<div class="empty-state">No entries yet.</div>';
+}
+
+/* =========================================================
+   LOGS LIST
+========================================================= */
+function renderLogsList(){
+  const sorted=[...ALL_LOGS].sort((a,b)=>b.date.localeCompare(a.date));
+  document.getElementById('logs-list').innerHTML=sorted.length
+    ? sorted.map(l=>`
+        <div class="log-pill${l.isOT?' overtime-pill':''}">
+          <div>
+            <p class="log-date">${l.date}${l.isOT?' <span style="font-size:9px;background:var(--red);color:#fff;padding:1px 6px;border-radius:5px;margin-left:4px;">OT</span>':''}</p>
+            <p class="log-site">${l.site||'TIIC'} · In: ${to12hr(l.timeIn||'08:00')} → Out: ${to12hr(effectiveTimeOut(l.timeOut))}</p>
+          </div>
+          <p class="log-hrs">${l.hours.toFixed(1)}h</p>
+        </div>`).join('')
+    : '<div class="empty-state">No entries yet.</div>';
+}
+
+/* =========================================================
+   SAVE MANUAL
+========================================================= */
+async function saveManual(){
+  const date=document.getElementById('man-date').value;
+  const tIn=document.getElementById('man-in').value||'08:00';
+  const tOut=document.getElementById('man-out').value;
+  const site=document.getElementById('man-site').value;
+  if(!date) return toast('Missing Date','Please select a date.','error');
+  if(!tOut) return toast('Missing Time Out','Please enter time out.','error');
+  const hours=calcHours(tIn,tOut);
+  if(hours<=0) return toast('Invalid Time','Time out must be after time in.','error');
+  const d=new Date(date+'T00:00:00');
+  const isOT=d.getDay()===6; // Saturday
+  await db.collection("ojt_logs").add({date,timeIn:tIn,timeOut:tOut,hours,site,isOT});
+  toast('Saved!',`${hours.toFixed(2)}h added${isOT?' (OT)':''}.`,'success');
+  fetchOjtData();
+}
+
+/* =========================================================
+   SHIFT TOGGLE
+========================================================= */
+let shiftStart=null;
+function toggleShift(){
+  const btn=document.getElementById('shift-btn');
+  if(!shiftStart){
+    shiftStart=new Date();
+    btn.textContent='End Shift';
+    btn.classList.add('ending');
+    toast('Shift Started','Clock is running. Focus up!','success');
+  } else {
+    const now=new Date();
+    const site=document.getElementById('site-select').value;
+    const date=shiftStart.toISOString().split('T')[0];
+    const tIn=shiftStart.toTimeString().slice(0,5);
+    const tOut=now.toTimeString().slice(0,5);
+    const hours=calcHours(tIn,tOut);
+    const d=new Date(date+'T00:00:00');
+    const isOT=d.getDay()===6;
+    db.collection("ojt_logs").add({date,timeIn:tIn,timeOut:tOut,hours,site,isOT});
+    btn.textContent='Start Shift';
+    btn.classList.remove('ending');
+    toast('Shift Ended',`${hours.toFixed(2)}h logged${isOT?' (OT)':''}.`,'success');
+    shiftStart=null;
+    fetchOjtData();
+  }
+}
+
+/* =========================================================
+   DTR — Month Navigation
+========================================================= */
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+let dtrYear=new Date().getFullYear();
+let dtrMonth=new Date().getMonth();
+
+function dtrPrev(){dtrMonth--;if(dtrMonth<0){dtrMonth=11;dtrYear--;}renderDTR();}
+function dtrNext(){dtrMonth++;if(dtrMonth>11){dtrMonth=0;dtrYear++;}renderDTR();}
+
+/* All days Mon–Sat in a month */
+function workdaysInMonth(year,month){
+  const days=[];
+  const d=new Date(year,month,1);
+  while(d.getMonth()===month){
+    const dow=d.getDay();
+    if(dow>=1&&dow<=6) days.push(d.toISOString().split('T')[0]); // Mon–Sat
+    d.setDate(d.getDate()+1);
+  }
+  return days;
+}
+
+/* ─── Global week number helpers ─────────────────────────────
+   Week 1 = Feb 16, 2025 (Sunday) through Feb 22, 2025 (Saturday)
+   Week 2 = Feb 23 → Mar 1, and so on — never resets per month.
+──────────────────────────────────────────────────────────── */
+const DTR_EPOCH = new Date('2025-02-16T00:00:00'); // absolute Week-1 Sunday
+
+function globalWeekNum(dateStr){
+  const d = new Date(dateStr + 'T00:00:00');
+  const diffDays = Math.floor((d - DTR_EPOCH) / 86400000);
+  if(diffDays < 0) return null;
+  return Math.floor(diffDays / 7) + 1;
+}
+
+function globalWeekSundayOf(weekNum){
+  // Returns the Sunday that starts that global week
+  return new Date(DTR_EPOCH.getTime() + (weekNum - 1) * 7 * 86400000);
+}
+
+function renderDTR(){
+  document.getElementById('dtr-month-title').textContent = MONTHS[dtrMonth];
+  document.getElementById('dtr-year-title').textContent = dtrYear;
+
+  const prefix = `${dtrYear}-${String(dtrMonth+1).padStart(2,'0')}`;
+  const monthLogs = ALL_LOGS.filter(l => l.date.startsWith(prefix));
+  const logMap = {};
+  monthLogs.forEach(l => logMap[l.date] = l);
+
+  const allDays = workdaysInMonth(dtrYear, dtrMonth); // Mon–Sat
+
+  let monthTotal = 0, monthOT = 0, daysWorked = 0;
+
+  // ── Group days into global weeks ─────────────────────────
+  const weekMap = new Map(); // weekNum → [dateStr, ...]
+  allDays.forEach(dateStr => {
+    const wn = globalWeekNum(dateStr);
+    if(wn === null) return;
+    if(!weekMap.has(wn)) weekMap.set(wn, []);
+    weekMap.get(wn).push(dateStr);
+  });
+
+  const sortedWeeks = [...weekMap.entries()].sort((a,b) => a[0]-b[0]);
+
+  const SHORT_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function formatDate(dateStr){
+    const d = new Date(dateStr + 'T00:00:00');
+    return `${SHORT_MONTHS[d.getMonth()]} ${d.getDate()}`;
+  }
+
+  let tbodyHtml = '';
+
+  sortedWeeks.forEach(([weekNum, days]) => {
+    let weekTotal = 0, weekOT = 0;
+
+    // ── Week header row ──────────────────────────────────
+    const wkSun = globalWeekSundayOf(weekNum);
+    const wkSat = new Date(wkSun.getTime() + 6*86400000);
+    const wkRange = `${SHORT_MONTHS[wkSun.getMonth()]} ${wkSun.getDate()} – ${SHORT_MONTHS[wkSat.getMonth()]} ${wkSat.getDate()}`;
+    tbodyHtml += `<tr class="week-header-row">
+      <td colspan="4">Week ${weekNum} &nbsp;·&nbsp; ${wkRange}</td>
+    </tr>`;
+
+    // ── Day rows ─────────────────────────────────────────
+    days.forEach(dateStr => {
+      const d = new Date(dateStr + 'T00:00:00');
+      const isSat = d.getDay() === 6;
+      const dateLabel = formatDate(dateStr);
+      const log = logMap[dateStr];
+
+      if(log){
+        const tIn  = log.timeIn  || '08:00';
+        const tOut = effectiveTimeOut(log.timeOut);
+        monthTotal += log.hours;
+        weekTotal  += log.hours;
+        daysWorked++;
+        if(isSat){ weekOT += log.hours; monthOT += log.hours; }
+
+        const otBadge = isSat
+          ? ` <span style="font-size:7.5px;background:var(--red);color:#fff;padding:1px 5px;border-radius:4px;font-weight:800;">⚡ OT</span>`
+          : '';
+
+        tbodyHtml += `<tr${isSat?' class="sat-row"':''}>
+          <td class="td-date">${dateLabel}${otBadge}</td>
+          <td class="time-val">${to12hr(tIn)}</td>
+          <td class="time-val">${to12hr(tOut)}</td>
+          <td class="daily-total">${log.hours.toFixed(1)}h${isSat?' <span style="font-size:8px;color:var(--red);font-weight:700;">OT</span>':''}</td>
+        </tr>`;
+      } else {
+        const otBadge = isSat
+          ? ` <span style="font-size:7.5px;background:rgba(192,24,43,.25);color:#fff;padding:1px 5px;border-radius:4px;">⚡ OT</span>`
+          : '';
+        tbodyHtml += `<tr${isSat?' class="sat-row"':''}>
+          <td class="td-date" style="color:${isSat?'var(--red)':'#d1d5db'}">${dateLabel}${otBadge}</td>
+          <td class="no-duty">—</td>
+          <td class="no-duty">—</td>
+          <td class="no-duty">—</td>
+        </tr>`;
+      }
+    });
+
+    // ── Week total row ───────────────────────────────────
+    const otLabel = weekOT > 0
+      ? `<span style="color:var(--red);font-size:9px;margin-left:6px;">(${weekOT.toFixed(1)}h OT)</span>`
+      : '';
+    tbodyHtml += `<tr class="week-total-row">
+      <td colspan="3" style="text-align:left;padding-left:14px;">📅 Week ${weekNum} Total ${otLabel}</td>
+      <td>${weekTotal.toFixed(1)}h</td>
+    </tr>`;
+  });
+
+  // ── Month total row ──────────────────────────────────────
+  const monthOTLabel = monthOT > 0
+    ? `<span style="color:var(--red);font-size:9.5px;margin-left:6px;">(${monthOT.toFixed(1)}h OT)</span>`
+    : '';
+  tbodyHtml += `<tr class="month-total-row">
+    <td colspan="3" style="text-align:left;padding-left:14px;">🏁 Month Total ${monthOTLabel}</td>
+    <td>${monthTotal.toFixed(1)}h</td>
+  </tr>`;
+
+  document.getElementById('dtr-tbody').innerHTML = tbodyHtml;
+
+  // ── Summary cards ────────────────────────────────────────
+  const grandTotal = ALL_LOGS.reduce((s,l) => s + l.hours, 0);
+  document.getElementById('dtr-month-total').textContent  = monthTotal.toFixed(1) + 'h';
+  document.getElementById('dtr-days-worked').textContent  = daysWorked;
+  document.getElementById('dtr-ot-month').textContent     = monthOT.toFixed(1) + 'h';
+  document.getElementById('dtr-remaining').textContent    = Math.max(0, 729 - grandTotal).toFixed(1) + 'h';
+}
+
+/* =========================================================
+   JOURNAL — starts at Feb 16, 2025 as Week 1
+========================================================= */
+const OJT_START = new Date('2025-02-16T00:00:00'); // Week 1 anchor
+
+function getOJTWeek(dateStr){
+  const d=new Date(dateStr+'T00:00:00');
+  // Monday of the week containing OJT_START
+  const startMonday=new Date(OJT_START);
+  // OJT_START is Feb 16 2025 = Sunday → Monday Feb 17? No, Feb 16 2025 is Sunday.
+  // But requirement says Feb 16–20. Feb 16 is a Sunday in 2025, so treat week as starting Sun.
+  // Actually: week 1 = Feb 16 (Sun) to Feb 20 (Thu). Let's treat week start = Sunday to Saturday.
+  const startSun=new Date(OJT_START); // Feb 16 = Sun
+  const diffDays=Math.floor((d-startSun)/86400000);
+  if(diffDays<0) return null;
+  const weekNum=Math.floor(diffDays/7)+1;
+  return weekNum;
+}
+
+function getWeekKey(dateStr){
+  const wn=getOJTWeek(dateStr);
+  if(wn===null) return null;
+  return `W${String(wn).padStart(2,'0')}`;
+}
+
+function weekRangeFromNum(weekNum){
+  const msPerWeek=7*86400000;
+  const start=new Date(OJT_START.getTime()+(weekNum-1)*msPerWeek);
+  const end=new Date(start.getTime()+6*86400000);
+  const opts={month:'short',day:'numeric'};
+  const y=start.getFullYear();
+  return `${start.toLocaleDateString('en-US',opts)} – ${end.toLocaleDateString('en-US',opts)}, ${y}`;
+}
+
+let journalData={};
+
+async function fetchJournals(){
+  const snap=await db.collection("ojt_journals").get();
+  journalData={};
+  snap.forEach(doc=>{journalData[doc.id]=doc.data().text||'';});
+  renderJournal();
+}
+
+function renderJournal(){
+  const weekMap={};
+  ALL_LOGS.forEach(l=>{
+    const wk=getWeekKey(l.date);
+    if(!wk) return;
+    if(!weekMap[wk]) weekMap[wk]=[];
+    weekMap[wk].push(l);
+  });
+
+  const weekKeys=Object.keys(weekMap).sort((a,b)=>b.localeCompare(a));
+
+  if(!weekKeys.length){
+    document.getElementById('journal-list').innerHTML='<div class="empty-state">No duty weeks yet. Add log entries first.</div>';
+    return;
+  }
+
+  const DAY_NAMES=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  document.getElementById('journal-list').innerHTML=weekKeys.map(wk=>{
+    const weekNum=parseInt(wk.replace('W',''));
+    const logs=weekMap[wk].sort((a,b)=>a.date.localeCompare(b.date));
+    const weekTotal=logs.reduce((s,l)=>s+l.hours,0);
+    const range=weekRangeFromNum(weekNum);
+    const savedText=journalData[wk]||'';
+    const isWeek1=weekNum===1;
+
+    const daysHtml=logs.map(l=>{
+      const d=new Date(l.date+'T00:00:00');
+      const isSat=d.getDay()===6;
+      return `<div class="journal-day-row">
+        <div>
+          <span class="jdr-day">${DAY_NAMES[d.getDay()]}, ${l.date}</span>
+          ${isSat?'<span style="font-size:8.5px;background:var(--red);color:#fff;padding:1px 5px;border-radius:4px;margin-left:5px;">OT</span>':''}
+        </div>
+        <div class="jdr-info">${to12hr(l.timeIn||'08:00')} → ${to12hr(effectiveTimeOut(l.timeOut))}</div>
+        <span class="jdr-hrs">${l.hours.toFixed(1)}h</span>
+      </div>`;
+    }).join('');
+
+    const noteSection=savedText
+      ? `<div class="journal-saved-note">${escHtml(savedText)}</div>
+         <button class="journal-edit-btn" onclick="editJournal('${wk}')">✏️ Edit Journal</button>`
+      : `<textarea class="journal-textarea" id="jt-${wk}" placeholder="Write your weekly reflection, tasks accomplished, challenges, and learnings here..."></textarea>
+         <button class="journal-save-btn" onclick="saveJournal('${wk}')">Save Journal Entry</button>`;
+
+    return `<div class="journal-week-card">
+      <div class="journal-week-header" onclick="toggleJournal('${wk}',this)">
+        <div>
+          <p class="jwh-title">Week ${weekNum}${isWeek1?'<span class="week1-badge">Start</span>':''}</p>
+          <p class="jwh-dates">${range}</p>
+        </div>
+        <div style="text-align:right">
+          <p class="jwh-hours">${weekTotal.toFixed(1)}h</p>
+          <p style="font-size:9.5px;color:#9ca3af;margin-top:2px">${logs.length} day${logs.length!==1?'s':''}</p>
+        </div>
+        <span class="jwh-chevron">▾</span>
+      </div>
+      <div class="journal-body" id="jb-${wk}">
+        <p class="sec-label" style="margin-bottom:9px">Duty Days</p>
+        <div class="journal-days-list">${daysHtml}</div>
+        <p class="sec-label" style="margin-bottom:9px">Weekly Reflection</p>
+        ${noteSection}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleJournal(wk,headerEl){
+  const body=document.getElementById('jb-'+wk);
+  const chev=headerEl.querySelector('.jwh-chevron');
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  chev.classList.toggle('open',!isOpen);
+}
+
+async function saveJournal(wk){
+  const ta=document.getElementById('jt-'+wk);
+  if(!ta||!ta.value.trim()) return toast('Empty','Write something first.','error');
+  await db.collection("ojt_journals").doc(wk).set({text:ta.value.trim()});
+  journalData[wk]=ta.value.trim();
+  renderJournal();
+  toast('Journal Saved','Your weekly reflection is saved.','success');
+  setTimeout(()=>{
+    const body=document.getElementById('jb-'+wk);
+    if(body&&!body.classList.contains('open')){
+      body.classList.add('open');
+      const h=document.querySelector(`[onclick="toggleJournal('${wk}',this)"]`);
+      if(h) h.querySelector('.jwh-chevron').classList.add('open');
+    }
+  },100);
+}
+
+function editJournal(wk){
+  const old=journalData[wk]||'';
+  const body=document.getElementById('jb-'+wk);
+  const noteDiv=body.querySelector('.journal-saved-note');
+  const editBtn=body.querySelector('.journal-edit-btn');
+  if(noteDiv) noteDiv.outerHTML=`<textarea class="journal-textarea" id="jt-${wk}">${escHtml(old)}</textarea>`;
+  if(editBtn) editBtn.outerHTML=`<button class="journal-save-btn" onclick="saveJournal('${wk}')">Save Journal Entry</button>`;
+}
+
+function escHtml(str){
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* =========================================================
+   TAB NAV
+========================================================= */
+function showTab(id,btn){
+  document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active-section'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active-section');
+  btn.classList.add('active');
+}
+
+/* =========================================================
+   LIVE CLOCK — 12-hour format
+========================================================= */
+function updateClock(){
+  const now=new Date();
+  const opts={hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true,timeZone:'Asia/Manila'};
+  document.getElementById('live-time').textContent=now.toLocaleTimeString('en-PH',opts);
+}
+setInterval(updateClock,1000);
+updateClock();
+
+/* =========================================================
+   QUOTES
+========================================================= */
+const QUOTES=[
+  "Precision in every line of code.",
+  "Engineering excellence, daily.",
+  "Focus on the goal: 729 Hours.",
+  "Every hour logged is a step forward.",
+  "Small progress is still progress.",
+  "Show up. Log in. Level up.",
+  "Consistency compounds.",
+  "The grind today builds the career tomorrow."
+];
+document.getElementById('daily-quote').textContent=`"${QUOTES[Math.floor(Math.random()*QUOTES.length)]}"`;
+
+/* =========================================================
+   INIT
+========================================================= */
+fetchOjtData();
+fetchJournals();
+</script>
+</body>
+</html>
